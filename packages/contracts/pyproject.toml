@@ -1,22 +1,15 @@
 [project]
-name = "agentic-ide-api"
+name = "agentic-ide-contracts"
 version = "0.1.0"
-description = "FastAPI backend for Agentic IDE"
-readme = "README.md"
+description = "Stable interface contracts for Agentic IDE — architectural source of truth"
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.32.0",
     "pydantic>=2.9.0",
-    "pydantic-settings>=2.6.0",
-    "httpx>=0.27.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.3.0",
-    "pytest-asyncio>=0.24.0",
-    "httpx>=0.27.0",
     "ruff>=0.8.0",
     "mypy>=1.13.0",
 ]
@@ -26,21 +19,17 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["app"]
+packages = ["agentic_ide_contracts"]
+
+# Map the existing layout to the import package name
+[tool.hatch.build]
+dev-mode-dirs = ["."]
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-src = ["app", "tests"]
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B"]
 
 [tool.mypy]
 python_version = "3.11"
 strict = true
 ignore_missing_imports = true
-
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-testpaths = ["tests"]
