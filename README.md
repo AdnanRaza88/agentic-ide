@@ -12,38 +12,47 @@ The system converts it into structured specifications, architecture, implementat
 External projects are integrated only through adapters, interfaces, CLI boundaries, HTTP APIs, MCP, plugins, or optional integrations.  
 Never make an external project a mandatory architectural dependency unless there is a strong technical reason.
 
-## High-Level Flow
+## Status: Foundation Infrastructure
 
-```
-User
-→ Application UI
-→ API
-→ Agent Runtime
-→ Graph
-→ State
-→ Context
-→ Model Provider
-→ Tools
-→ Harness
-→ Execution Environment
-→ Verification
-→ State Update
-→ Continue / Repair / Finish
+This phase delivers **repository + developer infrastructure only**:
+
+- Monorepo layout
+- FastAPI backend with health endpoints
+- Next.js frontend that calls the backend
+- Shared contracts package
+- Lint, format, typecheck, tests, CI
+- Dev scripts & documentation
+
+**Not implemented yet** (by design): agent runtime, MCP, plugins, model routing, sandbox, etc.
+
+## Quick start
+
+```bash
+# API (port 8000)
+chmod +x scripts/*.sh
+./scripts/dev-api.sh
+
+# Web (port 3000) — new terminal
+./scripts/dev-web.sh
 ```
 
-## Initial Stack
+Open http://localhost:3000 — you should see **Connected** when the API is up.
+
+Full guide: [docs/development.md](docs/development.md)
+
+## Stack
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | Next.js, TypeScript, Tailwind CSS, shadcn/ui, Monaco Editor |
+| Frontend | Next.js, TypeScript, Tailwind CSS |
 | Backend | Python, FastAPI, Pydantic |
-| Orchestration | Graph-based (LangGraph behind adapter if useful) |
-| Database | PostgreSQL |
-| Realtime | WebSocket |
-| Execution | Docker-based workspace/sandbox |
-| Models | Provider abstraction (OpenAI, Anthropic, Google, Qwen, OpenRouter, Ollama, OpenAI-compatible, custom) |
+| Contracts | Pydantic models + Protocol interfaces |
+| Lint/Format | Ruff (Python), ESLint (TS) |
+| Types | Mypy, TypeScript |
+| Tests | Pytest, tsc |
+| CI | GitHub Actions |
 
-## Repository Structure
+## Repository structure
 
 ```
 /
@@ -51,46 +60,27 @@ User
 │   ├── web/          # Next.js frontend
 │   └── api/          # FastAPI backend
 ├── packages/
-│   ├── contracts/    # All stable interfaces & schemas (source of truth)
-│   ├── agent-runtime/
-│   ├── graph/
-│   ├── state/
-│   ├── providers/
-│   ├── tools/
-│   ├── mcp/
-│   ├── plugins/
-│   ├── hooks/
-│   ├── harness/
-│   ├── workspace/
-│   ├── verifier/
-│   ├── specs/
-│   └── preview/
-├── skills/
-├── docs/             # Architecture, ADRs, guides
-├── tests/
-└── scripts/
+│   ├── contracts/    # Stable interfaces (source of truth)
+│   └── …             # Placeholders for future packages
+├── scripts/          # dev-api, dev-web, test, lint
+├── docs/             # Architecture, ADRs, development guide
+└── .github/workflows/ci.yml
 ```
 
-## Architectural Source of Truth
+## Architectural source of truth
 
-All future implementation **must** respect the contracts defined in `packages/contracts/` and the documents in `docs/`.
+All future implementation **must** respect contracts in `packages/contracts/` and docs under `docs/`.
 
 - Do **not** silently change contracts.
 - Any contract change requires an ADR first.
 
 See:
-- [Architecture Overview](docs/architecture.md)
-- [Interface Contracts](packages/contracts/)
-- [ADR Template](docs/adr/0000-template.md)
-- [Feature Ownership Rules](docs/feature-ownership.md)
-- [Testing Strategy](docs/testing-strategy.md)
-- [Integration Strategy](docs/integration-strategy.md)
-
-## Status
-
-This repository currently contains the **architectural foundation only**.  
-Major features are intentionally not implemented yet.
+- [Architecture](docs/architecture.md)
+- [Development](docs/development.md)
+- [Feature ownership](docs/feature-ownership.md)
+- [Testing strategy](docs/testing-strategy.md)
+- [Integration strategy](docs/integration-strategy.md)
 
 ## License
 
-Apache-2.0 (to be confirmed)
+Apache-2.0

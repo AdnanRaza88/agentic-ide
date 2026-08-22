@@ -4,13 +4,16 @@
   "private": true,
   "description": "Open-source Agentic IDE and Software Factory",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/web"
   ],
   "scripts": {
-    "dev:web": "npm run dev --workspace=apps/web",
-    "build": "npm run build --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "dev:web": "npm run dev --workspace=@agentic-ide/web",
+    "dev:api": "bash scripts/dev-api.sh",
+    "build:web": "npm run build --workspace=@agentic-ide/web",
+    "lint:web": "npm run lint --workspace=@agentic-ide/web",
+    "typecheck:web": "npm run typecheck --workspace=@agentic-ide/web",
+    "test": "bash scripts/test.sh",
+    "lint": "bash scripts/lint.sh"
   },
   "engines": {
     "node": ">=20"
