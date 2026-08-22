@@ -21,10 +21,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["agentic_ide_contracts"]
 
-# Map the existing layout to the import package name
-[tool.hatch.build]
-dev-mode-dirs = ["."]
-
 [tool.ruff]
 line-length = 100
 target-version = "py311"
