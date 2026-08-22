@@ -5,6 +5,7 @@ can verify connectivity. Agent runtime is intentionally not wired yet.
 """
 
 from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,7 +32,7 @@ app.add_middleware(
 
 
 @app.get("/health", tags=["health"])
-async def health() -> dict[str, str | bool]:
+async def health() -> dict[str, Any]:
     """Liveness probe — process is up."""
     return {
         "status": "ok",
@@ -42,7 +43,7 @@ async def health() -> dict[str, str | bool]:
 
 
 @app.get("/health/ready", tags=["health"])
-async def readiness() -> dict[str, str | bool]:
+async def readiness() -> dict[str, Any]:
     """Readiness probe — ready to accept traffic.
 
     Future: check DB, sandbox, etc. For now always ready.
