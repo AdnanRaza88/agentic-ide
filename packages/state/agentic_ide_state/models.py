@@ -166,7 +166,7 @@ class TaskRow(Base):
     version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
     project: Mapped[ProjectRow | None] = relationship(back_populates="tasks")
-    session: Mapped[SessionRow | None] = relationship(back_populates="sessions")
+    session: Mapped[SessionRow | None] = relationship(back_populates="tasks")
 
 
 class ModelUsageRow(Base):
